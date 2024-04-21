@@ -1,4 +1,4 @@
-from fastapi import File, UploadFile, Request, FastAPI, HTTPException
+from fastapi import File, UploadFile, Request, FastAPI, HTTPException, APIRouter
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import FileResponse, StreamingResponse
 from zipfile import ZipFile
@@ -11,16 +11,16 @@ import time
 import os
 
 
-app = FastAPI()
 templates = Jinja2Templates(directory="templates")
+router = APIRouter(prefix='/v1/modelapi')
 
 
-@app.get("/")
+@router.get("/")
 def main(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
-@app.post("/upload")
+@router.post("/upload")
 def upload(request: Request, file: UploadFile = File(...)):
     
     # TODO: Save upload file
@@ -65,13 +65,17 @@ def upload(request: Request, file: UploadFile = File(...)):
     return templates.TemplateResponse("display.html", {"request": request,  "file_name": os.path.basename(mesh_file)})
 
 
-@app.get("/download/{filename}")
-async def download_file(filename: str, request: Request):
+@router.get("/download/{filename}")
+def download_file(filename: str, request: Request):
     file_path = os.path.join("/tmp", filename).replace('..', '.')
     ext = os.path.splitext(file_path)[-1]
     if ext not in ['.stl']:
         raise
     return FileResponse(file_path, media_type="application/octet-stream", filename=os.path.basename(file_path))
+
+
+app = FastAPI()
+app.include_router(router)
 
 
 if __name__ == "__main__":
