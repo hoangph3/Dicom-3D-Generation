@@ -61,7 +61,7 @@ def upload(request: Request, file: UploadFile = File(...), x: int = Form(...), y
 
     # TODO: Smoothing
     from utility.smoothing import smooth
-    smooth_mesh_file = "smooth_" + mesh_file
+    smooth_mesh_file = os.path.join(os.path.dirname(mesh_file), "smooth_" + os.path.basename(mesh_file))
     smooth(
         input_file=mesh_file, output_file=smooth_mesh_file, **{
             "x": {"factor": 0.5, "iterations": x},

@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "skellytour"
+version = "2.0.0"
+requires-python = ">=3.9"
+description = "Skellytour: Bone Segmentation from Whole-Body CT scans"
+license = {file = "LICENSE"}
+authors = [
+    { name = "Christopher Wardell", email = "cpwardell@uams.edu"},
+    { name = "Daniel Mann", email = "dmann3@uams.edu"}
+]
+readme = "README.md"
+keywords = [
+    'deep learning',
+    'image segmentation',
+    'semantic segmentation',
+    'medical image analysis',
+    'medical image segmentation',
+    'nnU-Net',
+    'nnunet',
+    'skellytour',
+    'bone',
+    'bones',
+    'skeleton'
+]
+dependencies = [
+    "nnunetv2",
+    "py-cpuinfo",
+    "requests",
+    "numpy",
+    "SimpleITK",
+    "scikit-image>=0.19.3",
+    "torch"
+]
+
+[tool.setuptools]
+packages = ["skellytour"]
+
+[project.urls]
+homepage = "https://github.com/cpwardell/Skellytour"
+repository = "https://github.com/cpwardell/Skellytour"
+
+[project.scripts]
+skellytour = "skellytour.mainmethod:main"

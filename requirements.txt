@@ -4,4 +4,9 @@ numpy
 SimpleITK
 scikit-image>=0.19.3
 torch  #2.2.2
+bpy==4.1.0
+
 dicom2nifti
+fastapi
+python-multipart
+uvicorn
