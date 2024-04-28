@@ -4,8 +4,10 @@
   </head>
    <body>
       <h1>File</h1>
-      <a href="/v1/modelapi">Upload another dicom.zip</a>
+      <a href="/v1/modelapi">Upload another <b>dicom.zip</b></a>
       <br/>
-      <a href="/v1/modelapi/download/{{ file_name }}">Download STL file</a>
+      <a href="/v1/modelapi/download/{{ mesh_file }}">Download Raw STL file</a>
+      <br/>
+      <a href="/v1/modelapi/download/{{ smooth_mesh_file }}">Download Smooth STL file</a>
    </body>
 </html>

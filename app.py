@@ -1,4 +1,4 @@
-from fastapi import File, UploadFile, Request, FastAPI, HTTPException, APIRouter
+from fastapi import File, UploadFile, Request, FastAPI, HTTPException, APIRouter, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import FileResponse, StreamingResponse
 from zipfile import ZipFile
@@ -21,9 +21,10 @@ def main(request: Request):
 
 
 @router.post("/upload")
-def upload(request: Request, file: UploadFile = File(...)):
+def upload(request: Request, file: UploadFile = File(...), x: int = Form(...), y: int = Form(...), z: int = Form(...)):
     
     # TODO: Save upload file
+    print("Smoothing params:", x, y, z)
     work_dir = tempfile.TemporaryDirectory()
     work_dir_name = work_dir.name
     upload_file = os.path.join(work_dir_name, file.filename)
@@ -58,11 +59,27 @@ def upload(request: Request, file: UploadFile = File(...)):
     mesh_file = "_".join([nifti_file.split('.')[0], str(int(time.time()))]) + ".stl"
     subprocess.run(f"./nii2mesh/nii2mesh {segment_file} -v 1 -i b {mesh_file}", shell=True)
 
+    # TODO: Smoothing
+    from utility.smoothing import smooth
+    smooth_mesh_file = "smooth_" + mesh_file
+    smooth(
+        input_file=mesh_file, output_file=smooth_mesh_file, **{
+            "x": {"factor": 0.5, "iterations": x},
+            "y": {"factor": 0.5, "iterations": y},
+            "z": {"factor": 0.5, "iterations": z}
+        }
+    )
+
     # Clean up
     # work_dir.cleanup()
     print(f"Work dir: {work_dir_name}")
     shutil.copy(mesh_file, f"/tmp/{os.path.basename(mesh_file)}")
-    return templates.TemplateResponse("display.html", {"request": request,  "file_name": os.path.basename(mesh_file)})
+    shutil.copy(smooth_mesh_file, f"/tmp/{os.path.basename(smooth_mesh_file)}")
+
+    return templates.TemplateResponse(
+        "display.html",
+        {"request": request,  "mesh_file": os.path.basename(mesh_file), "smooth_mesh_file": os.path.basename(smooth_mesh_file)}
+    )
 
 
 @router.get("/download/{filename}")

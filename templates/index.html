@@ -5,9 +5,31 @@
    <body>
         <h1>File</h1>
         <form method="post" action="/v1/modelapi/upload"  enctype="multipart/form-data">
-            <label for="file">Choose dicom.zip to upload</label>
-            <input type="file" id="files" name="file"><br>
-            <input type="submit" value="Upload">
+            <label for="file">Choose <b>dicom.zip</b> to upload</label>
+            <br/>
+            <input type="file" id="files" name="file">
+            <br/>
+
+            <h1>Smoothing</h1>
+            <label for="x">Smooth x axis:</label>
+            <input type="range" value="0" max="100" name="x" oninput="x_out.value = this.value" id="x">
+            <output id="x_out">0</output>
+            <br/>
+
+            <label for="y">Smooth y axis:</label>
+            <input type="range" value="0" max="100" name="y" oninput="y_out.value = this.value" id="y">
+            <output id="y_out">0</output>
+            <br/>
+
+            <label for="z">Smooth z axis:</label>
+            <input type="range" value="0" max="100" name="z" oninput="z_out.value = this.value" id="z">
+            <output id="z_out">0</output>
+            <br/>
+
+            <br/>
+            After uploading the file, and selecting the smoothing threshol, click the <b>Generate</b> button.
+            <br/>
+            <input type="submit" value="Generate">
         </form>
    </body>
 </html>
