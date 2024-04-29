@@ -51,7 +51,7 @@ def upload(request: Request, file: UploadFile = File(...), x: int = Form(...), y
     nifti_file = glob(f"{work_dir_name}/*.nii*")[0]
     print(f"Segment on nifti file: {nifti_file}")
     model_type = "medium"
-    subprocess.run(f"export CUDA_VISIBLE_DEVICES=0 && skellytour -i {nifti_file} -o {work_dir_name}/segment -m {model_type} --overwrite", shell=True)
+    subprocess.run(f"skellytour -i {nifti_file} -o {work_dir_name}/segment -m {model_type} --overwrite", shell=True)
 
     # TODO: Nifti to mesh
     segment_file = glob(f"{work_dir_name}/segment/*postprocessed.nii*")[0]
