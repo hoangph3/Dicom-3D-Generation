@@ -3,7 +3,7 @@ import os
 
 
 def smooth(input_file, output_file, *args, **kwargs):
-    default_smooth = {"factor": 0.5, "iterations": 40}
+    default_smooth = {"factor": 0.5, "iterations": 1}
 
     # Import the STL file
     bpy.ops.import_mesh.stl(filepath=input_file)

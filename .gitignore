@@ -8,6 +8,7 @@ __pycache__/
 
 # Data
 data/
+*.stl
 
 # Distribution / packaging
 .Python
