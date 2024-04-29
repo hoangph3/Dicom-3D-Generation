@@ -57,7 +57,7 @@ def upload(request: Request, file: UploadFile = File(...), x: int = Form(...), y
     segment_file = glob(f"{work_dir_name}/segment/*postprocessed.nii*")[0]
     print(f"Convert mesh on nifti file: {segment_file}")
     mesh_file = "_".join([nifti_file.split('.')[0], str(int(time.time()))]) + ".stl"
-    subprocess.run(f"./nii2mesh/nii2mesh {segment_file} -v 1 -i b {mesh_file}", shell=True)
+    subprocess.run(f"./nii2mesh/nii2mesh {segment_file} -i b -l 0 -p 0 -r 1 -s 0 -v 1 {mesh_file}", shell=True)
 
     # TODO: Smoothing
     from utility.smoothing import smooth
